@@ -3,6 +3,7 @@ import Paper from "@material-ui/core/Paper";
 import DataTable from "./DataTable.js";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import "../css/Tile.css";
 
 const styles = theme => ({
@@ -22,6 +23,7 @@ class PensTile extends Component {
   async componentDidMount() {
     const response = await fetch("/api/animalPens");
     const body = await response.json();
+    console.warn(body);
     this.setState({ pens: body, isLoading: false });
   }
 
@@ -29,7 +31,7 @@ class PensTile extends Component {
     const { isLoading } = this.state;
 
     if (isLoading) {
-      return <p>Loading...</p>;
+      return <LinearProgress />;
     }
 
     return (

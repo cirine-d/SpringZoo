@@ -1,15 +1,13 @@
-package com.ada.developer.zoo.animal;
+package com.ada.developer.zoo.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-import com.ada.developer.zoo.pen.AnimalPen;
-
-import fj.data.Array;
+import com.ada.developer.zoo.entities.AnimalPen;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Entity
@@ -20,8 +18,8 @@ public class Animal {
     private Long id;
     private String name;
     private String species;
-    private Array<String> penType;
-    private Array<String> animalsCompatibleWith;
+    private ArrayList<String> penType;
+    private ArrayList<String> animalsCompatibleWith;
     private Integer landSpace;
     private Integer waterSpace;
     private Integer airSpace;
@@ -30,12 +28,11 @@ public class Animal {
     public Animal() {
     }
 
-    public Animal(String name, String species, Array<String> penType, Array<String> animalsCompatibleWith,
-            Integer landSpace, Integer waterSpace, Integer airSpace) {
+    public Animal(String name, String species, Integer landSpace, Integer waterSpace, Integer airSpace) {
         this.name = name;
         this.species = species;
-        this.penType = penType;
-        this.animalsCompatibleWith = animalsCompatibleWith;
+        this.penType = new ArrayList<String>();
+        this.animalsCompatibleWith = new ArrayList<String>();
         this.landSpace = landSpace;
         this.waterSpace = waterSpace;
         this.airSpace = airSpace;
@@ -66,20 +63,24 @@ public class Animal {
         this.species = species;
     }
 
-    public Array<String> getPenType() {
+    public ArrayList<String> getPenType() {
         return penType;
     }
 
-    public void setPenType(Array<String> penType) {
-        this.penType = penType;
+    public void setPenType(ArrayList<String> penType) {
+        ArrayList<String> arr = new ArrayList<String>();
+        penType.forEach(x -> arr.add(x));
+        this.penType = arr;
     }
 
-    public Array<String> getAnimalsCompatibleWith() {
+    public ArrayList<String> getAnimalsCompatibleWith() {
         return animalsCompatibleWith;
     }
 
-    public void setAnimalsCompatibleWith(Array<String> animalsCompatibleWith) {
-        this.animalsCompatibleWith = animalsCompatibleWith;
+    public void setAnimalsCompatibleWith(ArrayList<String> animalsCompatibleWith) {
+        ArrayList<String> arr = new ArrayList<String>();
+        animalsCompatibleWith.forEach(x -> arr.add(x));
+        this.animalsCompatibleWith = arr;
     }
 
     public Integer getLandSpace() {
@@ -117,19 +118,19 @@ public class Animal {
     private Boolean canShare(AnimalPen pen) {
         Boolean[] canShare = { true };
         pen.getAssignedAnimalTypes().forEach(species -> {
-            if (!this.animalsCompatibleWith.exists(x -> x.equals(species))) {
+            if (!this.animalsCompatibleWith.contains(species)) {
                 canShare[0] = false;
             }
         });
         return canShare[0];
     }
 
-    public Array<AnimalPen> findAvailablePens(Array<AnimalPen> existingPens) {
-        final Array<AnimalPen> availablePens = existingPens
-                .filter(pen -> (this.penType.exists(x -> x.equals(pen.getPenType()))
-                        && this.landSpace.equals(pen.getLandSpace()) && this.waterSpace.equals(pen.getWaterSpace())
-                        && this.airSpace.equals(pen.getAirSpace()) && this.canShare(pen)
-                        && !(pen.getCapacity().equals(0))));
+    public ArrayList<AnimalPen> findAvailablePens(ArrayList<AnimalPen> existingPens) {
+        final ArrayList<AnimalPen> availablePens = existingPens.stream()
+                .filter(pen -> (this.penType.contains(pen.getPenType()) && this.landSpace.equals(pen.getLandSpace())
+                        && this.waterSpace.equals(pen.getWaterSpace()) && this.airSpace.equals(pen.getAirSpace())
+                        && this.canShare(pen) && !(pen.getCapacity().equals(0))))
+                .collect(Collectors.toCollection(ArrayList::new));
         return availablePens;
     }
 

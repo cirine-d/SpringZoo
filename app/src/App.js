@@ -34,9 +34,8 @@ class App extends Component {
           <AnimalsTile />
           <PensTile />
           <StaffTile />
-          <StaffTile />
-
-          {/* <WeatherTile /> */}
+          {/* <StaffTile /> */}
+          <WeatherTile />
         </div>
       </div>
     );

@@ -1,7 +1,7 @@
 package com.ada.developer.zoo.web;
 
-import com.ada.developer.zoo.staff.ZooKeeper;
-import com.ada.developer.zoo.staff.ZooKeeperRepository;
+import com.ada.developer.zoo.entities.ZooKeeper;
+import com.ada.developer.zoo.repositories.ZooKeeperRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

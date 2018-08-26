@@ -1,6 +1,12 @@
-package com.ada.developer.zoo.pen;
+package com.ada.developer.zoo.repositories;
+
+import java.io.Serializable;
+import java.util.Optional;
+
+import com.ada.developer.zoo.entities.AnimalPen;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.Repository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource

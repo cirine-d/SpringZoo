@@ -1,41 +1,43 @@
-package com.ada.developer.zoo.pen;
+package com.ada.developer.zoo.entities;
 
-import com.ada.developer.zoo.animal.Animal;
-import com.ada.developer.zoo.staff.ZooKeeper;
+import com.ada.developer.zoo.entities.Animal;
+import com.ada.developer.zoo.entities.ZooKeeper;
 
-import fj.data.Array;
-import static fj.data.Array.array;
+import org.springframework.data.annotation.Persistent;
+import org.springframework.lang.NonNull;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
+@Table(name = "animal_pen")
 public class AnimalPen {
 
     @Id
     @GeneratedValue
     private Long id;
+    @NonNull
     private String name;
     private String penType;
     private Integer landSpace;
     private Integer waterSpace;
     private Integer airSpace;
     private Integer capacity;
-    @OneToMany(fetch = FetchType.EAGER)
-    private Array<Animal> animals;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Animal> animals;
 
     public AnimalPen() {
     }
 
     public AnimalPen(String name, String penType, Integer landSpace, Integer waterSpace, Integer airSpace) {
         this.name = name;
+        this.animals = Collections.<Animal>emptySet();
         this.penType = penType;
         this.landSpace = landSpace;
         this.waterSpace = waterSpace;
@@ -99,28 +101,37 @@ public class AnimalPen {
         this.capacity = capacity;
     }
 
-    public Array<Animal> getAnimals() {
+    public Set<Animal> getAnimals() {
         return animals;
     }
 
-    public void setAnimals(Array<Animal> animals) {
+    public void setAnimals(Set<Animal> animals) {
         this.animals = animals;
     }
 
     public void assignAnimal(Animal animal) {
-        this.animals.append(array(animal));
+        ArrayList<Animal> animals = new ArrayList<>();
+        this.animals.stream().forEach(x -> animals.add(x));
+        animals.add(animal);
+        this.animals = animals.stream().collect(Collectors.toSet());
+        this.capacity = this.capacity - 1;
     }
 
-    public Set<ZooKeeper> findAvailableStaff(Set<ZooKeeper> existingStaff) {
-
-        final Set<ZooKeeper> availableStaff = existingStaff.stream()
-                .filter(staff -> (staff.getPenTypes().exists(x -> x.equals(this.penType)))).collect(Collectors.toSet());
+    public ArrayList<ZooKeeper> findAvailableStaff(ArrayList<ZooKeeper> existingStaff) {
+        ArrayList<ZooKeeper> availableStaff = existingStaff.stream()
+                .filter(staff -> (staff.getPenTypes().contains(this.penType)))
+                .collect(Collectors.toCollection(ArrayList::new));
         return availableStaff;
     }
 
     public ArrayList<String> getAssignedAnimalTypes() {
+        Set<Animal> animals = this.animals;
         ArrayList<String> assignedAnimalTypes = new ArrayList<String>();
-        this.animals.map(animal -> assignedAnimalTypes.add(animal.getSpecies()));
+        if (animals.isEmpty()) {
+            return assignedAnimalTypes;
+        } else {
+            animals.stream().forEach(animal -> assignedAnimalTypes.add(animal.getSpecies()));
+        }
         return assignedAnimalTypes;
     }
 

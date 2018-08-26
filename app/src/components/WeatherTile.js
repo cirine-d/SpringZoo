@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Paper from "@material-ui/core/Paper";
 import "../css/Tile.css";
+import WeatherCard from "./WeatherCard";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
   root: {
@@ -13,8 +15,11 @@ const styles = theme => ({
 class WeatherTile extends Component {
   state = {
     isLoading: true,
-    weather: [],
-    temp: {}
+    description: "",
+    wind: 0,
+    temperature: 0,
+    humidity: 0,
+    icon: ""
   };
 
   async componentDidMount() {
@@ -23,25 +28,38 @@ class WeatherTile extends Component {
     );
     const body = await response.json();
     console.warn(body);
-    this.setState({ weather: { ...body }, isLoading: false });
+    const descr = body.weather[0].description;
+    const temp = body.main.temp;
+    const humidity = body.main.humidity;
+    const wind = body.wind.speed;
+    const icon = body.weather[0].icon;
+    this.setState({
+      description: descr,
+      wind: wind,
+      temperature: temp,
+      humidity: humidity,
+      icon: icon,
+      isLoading: false
+    });
   }
 
   render() {
     const { isLoading } = this.state;
 
     if (isLoading) {
-      return <p>Loading...</p>;
+      return <LinearProgress />;
     }
     console.warn({ state: this.state });
     return (
       <div className="Tile">
         <Paper className={styles.root} elevation={1}>
-          <div className="Content-wrapper">
-            <div className="Tile-header">
-              <h3>Weather</h3>
-              {this.state.weather}
-            </div>
-          </div>
+          <WeatherCard
+            description={this.state.description}
+            humidity={this.state.humidity}
+            wind={this.state.wind}
+            icon={this.state.icon}
+            temperature={this.state.temperature}
+          />
         </Paper>
       </div>
     );

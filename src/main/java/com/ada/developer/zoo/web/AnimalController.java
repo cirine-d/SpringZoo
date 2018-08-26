@@ -1,7 +1,9 @@
 package com.ada.developer.zoo.web;
 
-import com.ada.developer.zoo.animal.Animal;
-import com.ada.developer.zoo.animal.AnimalRepository;
+import com.ada.developer.zoo.entities.Animal;
+import com.ada.developer.zoo.repositories.AnimalRepository;
+import com.google.gson.Gson;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.io.FileReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;

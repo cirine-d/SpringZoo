@@ -1,7 +1,7 @@
 package com.ada.developer.zoo.web;
 
-import com.ada.developer.zoo.pen.AnimalPen;
-import com.ada.developer.zoo.pen.AnimalPenRepository;
+import com.ada.developer.zoo.entities.AnimalPen;
+import com.ada.developer.zoo.repositories.AnimalPenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
