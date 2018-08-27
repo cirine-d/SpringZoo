@@ -10,13 +10,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import Chip from "@material-ui/core/Chip";
 import { Divider } from "@material-ui/core";
 
 export default class AddAnimalPenDialog extends React.Component {
   state = {
     name: "",
-    assignedZooKeeper: "",
     error: null
   };
 
@@ -81,9 +79,10 @@ export default class AddAnimalPenDialog extends React.Component {
     if (
       (this.state.name !== "") &
       (this.state.penType !== "") &
-      (this.state.landSpace !== undefined) &
-      (this.state.waterSpace !== undefined) &
-      (this.state.airSpace !== undefined)
+      (this.state.landSpace !== "") &
+      (this.state.waterSpace !== "") &
+      (this.state.airSpace !== "") &
+      (this.state.assignedZooKeeper !== "")
     ) {
       isComplete = true;
     }
@@ -119,6 +118,7 @@ export default class AddAnimalPenDialog extends React.Component {
                 id: "age-native-simple"
               }}
             >
+              <option value="" />
               {this.props.penTypes.map(type => (
                 <option value={type}>{type}</option>
               ))}
@@ -128,7 +128,7 @@ export default class AddAnimalPenDialog extends React.Component {
             autoFocus
             margin="dense"
             id="name"
-            label="Land Area of Pen"
+            label="Land Area of Pen (m2)"
             onChange={this.handleLanspaceChange("landSpace")}
             type="email"
             fullWidth
@@ -137,7 +137,7 @@ export default class AddAnimalPenDialog extends React.Component {
             autoFocus
             margin="dense"
             id="name"
-            label="Water Volume of Pen"
+            label="Water Volume of Pen (m2)"
             onChange={this.handleWaterspaceChange("waterSpace")}
             fullWidth
           />
@@ -145,7 +145,7 @@ export default class AddAnimalPenDialog extends React.Component {
             autoFocus
             margin="dense"
             id="name"
-            label="Air Volume of Pen"
+            label="Air Volume of Pen (m2)"
             onChange={this.handleAirspaceChange("airSpace")}
             fullWidth
           />
@@ -168,6 +168,7 @@ export default class AddAnimalPenDialog extends React.Component {
                   id: "age-native-simple"
                 }}
               >
+                <option value="" />
                 {this.getSuitableZooKeeper().map(keeper => (
                   <option value={keeper.name}>{keeper.name}</option>
                 ))}
@@ -179,6 +180,8 @@ export default class AddAnimalPenDialog extends React.Component {
               back to this form.
             </span>
           )}
+          <br />
+          <br />
           <span style={{ color: "red" }}>{this.state.error}</span>
         </DialogContent>
         <DialogActions>

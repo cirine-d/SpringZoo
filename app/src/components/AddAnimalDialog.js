@@ -20,21 +20,28 @@ export default class AddAnimalDialog extends React.Component {
     name: "",
     penType: "",
     animalsCompatibleWith: [],
-    auto: false
+    auto: false,
+    error: null
   };
 
   handleSubmit = () => {
-    let item = {
-      name: this.state.name,
-      species: this.state.species,
-      penType: [this.state.penType],
-      animalsCompatibleWith: this.state.animalsCompatibleWith,
-      landSpace: this.state.landSpace,
-      waterSpace: this.state.waterSpace,
-      airSpace: this.state.airSpace
-    };
-    this.props.submit(item, "animals");
-    this.props.close();
+    if (this.isFormComplete()) {
+      this.setState({ error: null });
+      let item = {
+        name: this.state.name,
+        species: this.state.species,
+        penType: [this.state.penType],
+        animalsCompatibleWith: this.state.animalsCompatibleWith,
+        landSpace: this.state.landSpace,
+        waterSpace: this.state.waterSpace,
+        airSpace: this.state.airSpace,
+        assignedPen: this.state.assignedPen
+      };
+      this.props.submit(item, "animals");
+      this.props.close();
+    } else {
+      this.setState({ error: "Complete all required fields" });
+    }
   };
 
   handleAutoChange = name => event => {
@@ -83,6 +90,22 @@ export default class AddAnimalDialog extends React.Component {
     return list;
   };
 
+  isFormComplete = () => {
+    var isComplete = false;
+    if (
+      (this.state.name !== "") &
+      (this.state.species !== "") &
+      (this.state.penType !== "") &
+      (this.state.landSpace !== "") &
+      (this.state.waterSpace !== "") &
+      (this.state.airSpace !== "") &
+      (this.state.assignedPen !== "")
+    ) {
+      isComplete = true;
+    }
+    return isComplete;
+  };
+
   validatePen = pen => {
     var isSuitable = false;
     if (
@@ -97,7 +120,6 @@ export default class AddAnimalDialog extends React.Component {
           !this.state.animalsCompatibleWith.includes(species) &&
           (isSuitable = false)
       );
-      console.warn(this.getAssignedSpecies(pen));
 
       return isSuitable;
     }
@@ -105,7 +127,6 @@ export default class AddAnimalDialog extends React.Component {
 
   getSuitablePen() {
     let list = [];
-    console.warn(this.props.pens);
     this.props.pens.map(pen => this.validatePen(pen) && list.push(pen));
     if (list.length === 0) {
       return null;
@@ -115,7 +136,6 @@ export default class AddAnimalDialog extends React.Component {
   }
 
   render() {
-    console.warn(this.getSuitablePen());
     return (
       <Dialog
         open={this.props.open}
@@ -152,6 +172,7 @@ export default class AddAnimalDialog extends React.Component {
                 id: "age-native-simple"
               }}
             >
+              <option value="" />
               {this.props.penTypes.map(type => (
                 <option value={type}>{type}</option>
               ))}
@@ -161,7 +182,7 @@ export default class AddAnimalDialog extends React.Component {
             autoFocus
             margin="dense"
             id="name"
-            label="Land Area of Pen"
+            label="Land Area of Pen (m2)"
             onChange={this.handleLanspaceChange("landSpace")}
             type="email"
             fullWidth
@@ -170,7 +191,7 @@ export default class AddAnimalDialog extends React.Component {
             autoFocus
             margin="dense"
             id="name"
-            label="Water Volume of Pen"
+            label="Water Volume of Pen (m2)"
             onChange={this.handleWaterspaceChange("waterSpace")}
             fullWidth
           />
@@ -178,12 +199,14 @@ export default class AddAnimalDialog extends React.Component {
             autoFocus
             margin="dense"
             id="name"
-            label="Air Volume of Pen"
+            label="Air Volume of Pen (m2)"
             onChange={this.handleAirspaceChange("airSpace")}
             fullWidth
           />
           <FormControl>
-            <InputLabel htmlFor="select-multiple-chip">Chip</InputLabel>
+            <InputLabel htmlFor="select-multiple-chip">
+              Can Share With
+            </InputLabel>
             <Select
               fullWidth
               multiple
@@ -248,6 +271,9 @@ export default class AddAnimalDialog extends React.Component {
               this form.
             </span>
           )}
+          <br />
+          <br />
+          <span style={{ color: "red" }}>{this.state.error}</span>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.close} color="primary">
