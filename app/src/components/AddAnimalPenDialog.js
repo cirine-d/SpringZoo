@@ -29,7 +29,8 @@ export default class AddAnimalPenDialog extends React.Component {
         landSpace: this.state.landSpace,
         waterSpace: this.state.waterSpace,
         airSpace: this.state.airSpace,
-        assignedZooKeeper: ""
+        assignedZooKeeper: "",
+        capacity: 10
       };
       this.props.submit(item, "animalPens");
       this.props.close();

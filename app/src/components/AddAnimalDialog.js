@@ -75,9 +75,11 @@ export default class AddAnimalDialog extends React.Component {
 
   getAssignedSpecies = pen => {
     let list = [];
-    pen.animals.map(
-      animal => !list.includes(animal.species) && list.push(animal.species)
-    );
+    pen.animals
+      ? pen.animals.map(
+          animal => !list.includes(animal.species) && list.push(animal.species)
+        )
+      : null;
     return list;
   };
 

@@ -149,9 +149,8 @@ class CustomPaginationActionsTable extends React.Component {
   }
 
   getCapacity(pen) {
-    const animals = pen.animals.length;
-    const total = pen.capacity;
-    return `${animals}/${total}`;
+    const freeSpots = pen.capacity !== 0 ? pen.capacity : "full";
+    return freeSpots;
   }
 
   render() {
@@ -169,7 +168,7 @@ class CustomPaginationActionsTable extends React.Component {
                 <TableCell>Name</TableCell>
                 <TableCell>Species</TableCell>
                 <TableCell>Type</TableCell>
-                <TableCell>Capacity</TableCell>
+                <TableCell>Spots Left</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
