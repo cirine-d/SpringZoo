@@ -1,61 +1,74 @@
 package com.ada.developer.zoo.web;
 
+import com.ada.developer.zoo.FileHandler;
+import com.ada.developer.zoo.entities.Animal;
 import com.ada.developer.zoo.entities.ZooKeeper;
-import com.ada.developer.zoo.repositories.ZooKeeperRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
 class ZooKeeperController {
 
     private final Logger log = LoggerFactory.getLogger(AnimalController.class);
-    private ZooKeeperRepository zooKeeperRepository;
 
-    public ZooKeeperController(ZooKeeperRepository zooKeeperRepository) {
-        this.zooKeeperRepository = zooKeeperRepository;
-    }
+    File file = new File("C:\\Code\\GitKraken\\SpringZoo\\staff.json");
 
     @GetMapping("/staff")
-    Collection<ZooKeeper> animals() {
-        return zooKeeperRepository.findAll();
+    ArrayList<ZooKeeper> staff() {
+        return FileHandler.readFromZooKeeperFile(file.getPath());
     }
 
-    @GetMapping("/staff/{id}")
-    ResponseEntity<?> getAnimal(@PathVariable Long id) {
-        Optional<ZooKeeper> zooKeeper = zooKeeperRepository.findById(id);
-        return zooKeeper.map(response -> ResponseEntity.ok().body(response))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @GetMapping("/staff/{name}")
+    ResponseEntity<?> getStaffMember(@PathVariable String name) {
+        ZooKeeper keeper = FileHandler.findZooKeeper(name, file.getPath());
+        if (!keeper.equals(null)) {
+            return ResponseEntity.ok().body(keeper);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PostMapping("/staffMember")
-    ResponseEntity<ZooKeeper> createAnimal(@Valid @RequestBody ZooKeeper zooKeeper) throws URISyntaxException {
+    @PostMapping("/staff")
+    ResponseEntity<ZooKeeper> createZooKeeper(@Valid @RequestBody ZooKeeper zooKeeper) throws URISyntaxException {
         log.info("Request to create zooKeeper: {}", zooKeeper);
-        ZooKeeper result = zooKeeperRepository.save(zooKeeper);
-        return ResponseEntity.created(new URI("/api/zooKeeper/" + result.getId())).body(result);
+        ArrayList<ZooKeeper> keeperList = new ArrayList<ZooKeeper>();
+        FileHandler.readFromZooKeeperFile(file.getPath()).stream().forEach(item -> keeperList.add(item));
+        keeperList.add(zooKeeper);
+        FileHandler.writeZooKeeperToFile(keeperList, file.getPath());
+        ZooKeeper result = FileHandler.findZooKeeper(zooKeeper.getName(), file.getPath());
+        return ResponseEntity.created(new URI("/api/zooKeeper/" + result.getName())).body(result);
     }
 
-    @PutMapping("/staffMember/{id}")
-    ResponseEntity<ZooKeeper> updateAnimal(@PathVariable Long id, @Valid @RequestBody ZooKeeper zooKeeper) {
-        zooKeeper.setId(id);
+    @PutMapping("/staff/{name}")
+    ResponseEntity<ZooKeeper> updateZooKeeper(@PathVariable String name, @Valid @RequestBody ZooKeeper zooKeeper)
+            throws URISyntaxException {
         log.info("Request to update zooKeeper: {}", zooKeeper);
-        ZooKeeper result = zooKeeperRepository.save(zooKeeper);
-        return ResponseEntity.ok().body(result);
+        ArrayList<ZooKeeper> keeperList = new ArrayList<ZooKeeper>();
+        FileHandler.readFromZooKeeperFile(file.getPath()).stream().forEach(item -> keeperList.add(item));
+        ArrayList<ZooKeeper> updatedList = keeperList.stream().filter(keeper -> !keeper.getName().equals(name))
+                .collect(Collectors.toCollection(ArrayList::new));
+        updatedList.add(zooKeeper);
+        FileHandler.writeZooKeeperToFile(updatedList, file.getPath());
+        ZooKeeper result = FileHandler.findZooKeeper(zooKeeper.getName(), file.getPath());
+        return ResponseEntity.created(new URI("/api/zooKeeper/" + result.getName())).body(result);
     }
 
-    @DeleteMapping("/staffMember/{id}")
-    public ResponseEntity<?> deleteAnimal(@PathVariable Long id) {
-        log.info("Request to delete group: {}", id);
-        zooKeeperRepository.deleteById(id);
+    @DeleteMapping("/staff/{name}")
+    public ResponseEntity<?> deleteZooKeeper(@PathVariable String name) {
+        log.info("Request to delete keeper: {}", name);
+        FileHandler.retrieveZooKeeper(name, file.getPath());
         return ResponseEntity.ok().build();
     }
 }

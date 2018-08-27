@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Paper from "@material-ui/core/Paper";
-import DataTable from "./DataTable.js";
+import AnimalPenData from "./AnimalPenData.js";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import AddAnimalPenDialog from "./AddAnimalPenDialog.js";
+
 import "../css/Tile.css";
 
 const styles = theme => ({
@@ -16,24 +17,19 @@ const styles = theme => ({
 
 class PensTile extends Component {
   state = {
-    isLoading: true,
-    pens: []
+    pens: this.props.data,
+    dialogOpen: false
   };
 
-  async componentDidMount() {
-    const response = await fetch("/api/animalPens");
-    const body = await response.json();
-    console.warn(body);
-    this.setState({ pens: body, isLoading: false });
-  }
+  handleClickOpen = () => {
+    this.setState({ dialogOpen: true });
+  };
+
+  handleClose = () => {
+    this.setState({ dialogOpen: false });
+  };
 
   render() {
-    const { isLoading } = this.state;
-
-    if (isLoading) {
-      return <LinearProgress />;
-    }
-
     return (
       <div className="Tile">
         <Paper className={styles.root} elevation={1}>
@@ -47,13 +43,21 @@ class PensTile extends Component {
                 mini
                 color="primary"
                 aria-label="Add"
+                onClick={this.handleClickOpen}
               >
                 <AddIcon />
               </Button>
             </div>
-            <DataTable data={this.state.pens} />
+            <AnimalPenData data={this.state.pens} />
           </div>
         </Paper>
+        <AddAnimalPenDialog
+          close={this.handleClose}
+          open={this.state.dialogOpen}
+          penTypes={this.props.penTypes}
+          submit={this.props.submit}
+          keepers={this.props.keepers}
+        />
       </div>
     );
   }

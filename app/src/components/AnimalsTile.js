@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Paper from "@material-ui/core/Paper";
-import DataTable from "./DataTable.js";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import AddAnimalDialog from "./AddAnimalDialog.js";
 import "../css/Tile.css";
+import AnimalData from "./AnimalData.js";
 
 const styles = theme => ({
   root: {
@@ -16,23 +16,20 @@ const styles = theme => ({
 
 class AnimalsTile extends Component {
   state = {
-    isLoading: true,
-    animals: []
+    animals: this.props.data,
+    speciesKnown: this.props.species,
+    dialogOpen: false
   };
 
-  async componentDidMount() {
-    const response = await fetch("/api/animals");
-    const body = await response.json();
-    this.setState({ animals: body, isLoading: false });
-  }
+  handleClickOpen = () => {
+    this.setState({ dialogOpen: true });
+  };
+
+  handleClose = () => {
+    this.setState({ dialogOpen: false });
+  };
 
   render() {
-    const { isLoading } = this.state;
-
-    if (isLoading) {
-      return <LinearProgress />;
-    }
-
     return (
       <div className="Tile">
         <Paper className={styles.root} elevation={1}>
@@ -40,19 +37,31 @@ class AnimalsTile extends Component {
             <div className="Tile-header">
               <h3>Animals</h3>
               <h5>- {this.state.animals.length} animals</h5>
+              <h5>- {this.state.speciesKnown.length} species</h5>
+
               <Button
                 className="button"
                 variant="fab"
                 mini
                 color="primary"
                 aria-label="Add"
+                onClick={this.handleClickOpen}
               >
                 <AddIcon />
               </Button>
             </div>
-            <DataTable data={this.state.animals} />
+            <AnimalData data={this.state.animals} />
           </div>
         </Paper>
+        <AddAnimalDialog
+          close={this.handleClose}
+          open={this.state.dialogOpen}
+          species={this.state.speciesKnown}
+          pens={this.props.pens}
+          penTypes={this.props.penTypes}
+          animalNames={this.props.animalNames}
+          submit={this.props.submit}
+        />
       </div>
     );
   }

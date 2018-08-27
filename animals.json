@@ -1,0 +1,118 @@
+[
+  [
+    {
+      "name": "Cujo",
+      "species": "Sloth",
+      "penType": [
+        "Dry"
+      ],
+      "animalsCompatibleWith": [
+        "Sloth"
+      ],
+      "landSpace": 3,
+      "waterSpace": 0,
+      "airSpace": 0,
+      "inPen": false
+    },
+    {
+      "name": "Daze",
+      "species": "Penguin",
+      "penType": [
+        "PartWater-PartDry"
+      ],
+      "animalsCompatibleWith": [
+        "Penguin"
+      ],
+      "landSpace": 2,
+      "waterSpace": 4,
+      "airSpace": 0,
+      "inPen": false
+    },
+    {
+      "name": "Harper",
+      "species": "Goat",
+      "penType": [
+        "Dry",
+        "Petting"
+      ],
+      "animalsCompatibleWith": [
+        "Goat"
+      ],
+      "landSpace": 3,
+      "waterSpace": 0,
+      "airSpace": 0,
+      "inPen": false
+    },
+    {
+      "name": "Sticky",
+      "species": "Dog",
+      "penType": [
+        "Dry",
+        "Petting"
+      ],
+      "animalsCompatibleWith": [
+        "Dog"
+      ],
+      "landSpace": 3,
+      "waterSpace": 0,
+      "airSpace": 0,
+      "inPen": false
+    },
+    {
+      "name": "Ernst",
+      "species": "Owl",
+      "penType": [
+        "Aviary"
+      ],
+      "animalsCompatibleWith": [
+        "Owl"
+      ],
+      "landSpace": 0,
+      "waterSpace": 0,
+      "airSpace": 20,
+      "inPen": false
+    },
+    {
+      "name": "Aspen",
+      "species": "Dolphin",
+      "penType": [
+        "Aquarium"
+      ],
+      "animalsCompatibleWith": [
+        "Dolphin"
+      ],
+      "landSpace": 0,
+      "waterSpace": 40,
+      "airSpace": 0,
+      "inPen": false
+    },
+    {
+      "name": "Camay",
+      "species": "Hippo",
+      "penType": [
+        "PartWater-PartDry"
+      ],
+      "animalsCompatibleWith": [
+        "Hippo"
+      ],
+      "landSpace": 10,
+      "waterSpace": 20,
+      "airSpace": 0,
+      "inPen": false
+    },
+    {
+      "name": "Blue",
+      "species": "Cat",
+      "penType": [
+        "Dry"
+      ],
+      "animalsCompatibleWith": [
+        "Cat"
+      ],
+      "landSpace": 4,
+      "waterSpace": 0,
+      "airSpace": 0,
+      "inPen": false
+    }
+  ]
+]

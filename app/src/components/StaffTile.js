@@ -1,30 +1,27 @@
 import React, { Component } from "react";
 import Paper from "@material-ui/core/Paper";
-import DataTable from "./DataTable.js";
+import StaffData from "./StaffData.js";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import AddZooKeeperDialog from "./AddZooKeeperDialog.js";
 import "../css/Tile.css";
 
 class StaffTile extends Component {
   state = {
-    isLoading: true,
-    staffMembers: []
+    staffMembers: this.props.data,
+    dialogOpen: false
   };
 
-  async componentDidMount() {
-    const response = await fetch("/api/staff");
-    const body = await response.json();
-    this.setState({ staffMembers: body, isLoading: false });
-  }
+  handleClickOpen = () => {
+    this.setState({ dialogOpen: true });
+  };
+
+  handleClose = () => {
+    this.setState({ dialogOpen: false });
+  };
 
   render() {
-    const { isLoading } = this.state;
-
-    if (isLoading) {
-      return <LinearProgress />;
-    }
-
     return (
       <div className="Tile">
         <Paper className="Paper" elevation={1}>
@@ -38,13 +35,23 @@ class StaffTile extends Component {
                 mini
                 color="primary"
                 aria-label="Add"
+                onClick={this.handleClickOpen}
               >
                 <AddIcon />
               </Button>
             </div>
-            <DataTable data={this.state.staffMembers} />
+            <StaffData data={this.state.staffMembers} />
           </div>
         </Paper>
+        <AddZooKeeperDialog
+          close={this.handleClose}
+          open={this.state.dialogOpen}
+          species={this.state.speciesKnown}
+          pens={this.props.pens}
+          penTypes={this.props.penTypes}
+          animalNames={this.props.animalNames}
+          submit={this.props.submit}
+        />
       </div>
     );
   }

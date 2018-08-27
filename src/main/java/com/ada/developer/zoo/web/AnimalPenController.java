@@ -1,61 +1,73 @@
 package com.ada.developer.zoo.web;
 
+import com.ada.developer.zoo.FileHandler;
 import com.ada.developer.zoo.entities.AnimalPen;
-import com.ada.developer.zoo.repositories.AnimalPenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
 class AnimalPenController {
 
-    private final Logger log = LoggerFactory.getLogger(AnimalController.class);
-    private AnimalPenRepository animalPenRepository;
+    private final Logger log = LoggerFactory.getLogger(AnimalPenController.class);
 
-    public AnimalPenController(AnimalPenRepository animalPenRepository) {
-        this.animalPenRepository = animalPenRepository;
-    }
+    File file = new File("C:\\Code\\GitKraken\\SpringZoo\\pens.json");
 
     @GetMapping("/animalPens")
-    Collection<AnimalPen> animals() {
-        return animalPenRepository.findAll();
+    ArrayList<AnimalPen> pens() {
+        return FileHandler.readFromAnimalPenFile(file.getPath());
     }
 
-    @GetMapping("/animalPens/{id}")
-    ResponseEntity<?> getAnimal(@PathVariable Long id) {
-        Optional<AnimalPen> animalPen = animalPenRepository.findById(id);
-        return animalPen.map(response -> ResponseEntity.ok().body(response))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @GetMapping("/animalPens/{name}")
+    ResponseEntity<?> getPen(@PathVariable String name) {
+        AnimalPen pen = FileHandler.findAnimalPen(name, file.getPath());
+        if (!pen.equals(null)) {
+            return ResponseEntity.ok().body(pen);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PostMapping("/animalPen")
-    ResponseEntity<AnimalPen> createAnimal(@Valid @RequestBody AnimalPen animalPen) throws URISyntaxException {
+    @PostMapping("/animalPens")
+    ResponseEntity<AnimalPen> createAnimalPen(@Valid @RequestBody AnimalPen animalPen) throws URISyntaxException {
         log.info("Request to create animalPen: {}", animalPen);
-        AnimalPen result = animalPenRepository.save(animalPen);
-        return ResponseEntity.created(new URI("/api/animalPen/" + result.getId())).body(result);
+        ArrayList<AnimalPen> animalList = new ArrayList<AnimalPen>();
+        FileHandler.readFromAnimalPenFile(file.getPath()).stream().forEach(item -> animalList.add(item));
+        animalList.add(animalPen);
+        FileHandler.writeAnimalPenToFile(animalList, file.getPath());
+        AnimalPen result = FileHandler.findAnimalPen(animalPen.getName(), file.getPath());
+        return ResponseEntity.created(new URI("/api/animalPens/" + result.getName())).body(result);
     }
 
-    @PutMapping("/animalPen/{id}")
-    ResponseEntity<AnimalPen> updateAnimal(@PathVariable Long id, @Valid @RequestBody AnimalPen animalPen) {
-        animalPen.setId(id);
+    @PutMapping("/animalPens/{name}")
+    ResponseEntity<AnimalPen> updateAnimalPen(@PathVariable String name, @Valid @RequestBody AnimalPen animalPen)
+            throws URISyntaxException {
         log.info("Request to update animalPen: {}", animalPen);
-        AnimalPen result = animalPenRepository.save(animalPen);
-        return ResponseEntity.ok().body(result);
+        ArrayList<AnimalPen> animalList = new ArrayList<AnimalPen>();
+        FileHandler.readFromAnimalPenFile(file.getPath()).stream().forEach(item -> animalList.add(item));
+        ArrayList<AnimalPen> updatedList = animalList.stream().filter(pen -> !pen.getName().equals(name))
+                .collect(Collectors.toCollection(ArrayList::new));
+        updatedList.add(animalPen);
+        FileHandler.writeAnimalPenToFile(updatedList, file.getPath());
+        AnimalPen result = FileHandler.findAnimalPen(animalPen.getName(), file.getPath());
+        return ResponseEntity.created(new URI("/api/animalPens/" + result.getName())).body(result);
     }
 
-    @DeleteMapping("/animalPen/{id}")
-    public ResponseEntity<?> deleteAnimal(@PathVariable Long id) {
-        log.info("Request to delete group: {}", id);
-        animalPenRepository.deleteById(id);
+    @DeleteMapping("/animalPens/{name}")
+    public ResponseEntity<?> deleteAnimalPen(@PathVariable String name) {
+        log.info("Request to delete animalPen: {}", name);
+        FileHandler.retrieveAnimalPen(name, file.getPath());
         return ResponseEntity.ok().build();
     }
 }

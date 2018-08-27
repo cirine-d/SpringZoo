@@ -35,14 +35,15 @@ public class AnimalPen {
     public AnimalPen() {
     }
 
-    public AnimalPen(String name, String penType, Integer landSpace, Integer waterSpace, Integer airSpace) {
+    public AnimalPen(String name, String penType, Integer landSpace, Integer waterSpace, Integer airSpace,
+            Integer capacity) {
         this.name = name;
         this.animals = Collections.<Animal>emptySet();
         this.penType = penType;
         this.landSpace = landSpace;
         this.waterSpace = waterSpace;
         this.airSpace = airSpace;
-        this.capacity = 10;
+        this.capacity = capacity;
     }
 
     public Long getId() {
@@ -127,7 +128,7 @@ public class AnimalPen {
     public ArrayList<String> getAssignedAnimalTypes() {
         Set<Animal> animals = this.animals;
         ArrayList<String> assignedAnimalTypes = new ArrayList<String>();
-        if (animals.isEmpty()) {
+        if (animals == null) {
             return assignedAnimalTypes;
         } else {
             animals.stream().forEach(animal -> assignedAnimalTypes.add(animal.getSpecies()));

@@ -27,7 +27,6 @@ class WeatherTile extends Component {
       "https://api.openweathermap.org/data/2.5/weather?id=2172797&APPID=483d1e767a9ef8510f28061c00e343ad"
     );
     const body = await response.json();
-    console.warn(body);
     const descr = body.weather[0].description;
     const temp = body.main.temp;
     const humidity = body.main.humidity;
@@ -49,7 +48,6 @@ class WeatherTile extends Component {
     if (isLoading) {
       return <LinearProgress />;
     }
-    console.warn({ state: this.state });
     return (
       <div className="Tile">
         <Paper className={styles.root} elevation={1}>

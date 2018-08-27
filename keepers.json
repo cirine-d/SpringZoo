@@ -1,0 +1,258 @@
+[
+  [
+    {
+      "name": "Hardip",
+      "penTypes": [
+        "Dry",
+        "Aviaries"
+      ],
+      "assignedPens": [
+        {
+          "name": "Sloths",
+          "penType": "Dry",
+          "landSpace": 3,
+          "waterSpace": 0,
+          "airSpace": 0,
+          "capacity": 9,
+          "animals": [
+            {
+              "name": "Cujo",
+              "species": "Sloth",
+              "penType": [
+                "Dry"
+              ],
+              "animalsCompatibleWith": [
+                "Sloth"
+              ],
+              "landSpace": 3,
+              "waterSpace": 0,
+              "airSpace": 0,
+              "inPen": false
+            }
+          ]
+        },
+        {
+          "name": "Cats",
+          "penType": "Dry",
+          "landSpace": 4,
+          "waterSpace": 0,
+          "airSpace": 0,
+          "capacity": 9,
+          "animals": [
+            {
+              "name": "Blue",
+              "species": "Cat",
+              "penType": [
+                "Dry"
+              ],
+              "animalsCompatibleWith": [
+                "Cat"
+              ],
+              "landSpace": 4,
+              "waterSpace": 0,
+              "airSpace": 0,
+              "inPen": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Alex",
+      "penTypes": [
+        "Aquarium",
+        "PartWater-PartDry"
+      ],
+      "assignedPens": [
+        {
+          "name": "Penguins",
+          "penType": "PartWater-PartDry",
+          "landSpace": 2,
+          "waterSpace": 4,
+          "airSpace": 0,
+          "capacity": 9,
+          "animals": [
+            {
+              "name": "Daze",
+              "species": "Penguin",
+              "penType": [
+                "PartWater-PartDry"
+              ],
+              "animalsCompatibleWith": [
+                "Penguin"
+              ],
+              "landSpace": 2,
+              "waterSpace": 4,
+              "airSpace": 0,
+              "inPen": false
+            }
+          ]
+        },
+        {
+          "name": "Dolphins",
+          "penType": "Aquarium",
+          "landSpace": 0,
+          "waterSpace": 40,
+          "airSpace": 0,
+          "capacity": 9,
+          "animals": [
+            {
+              "name": "Aspen",
+              "species": "Dolphin",
+              "penType": [
+                "Aquarium"
+              ],
+              "animalsCompatibleWith": [
+                "Dolphin"
+              ],
+              "landSpace": 0,
+              "waterSpace": 40,
+              "airSpace": 0,
+              "inPen": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Farhad",
+      "penTypes": [
+        "Aviaries",
+        "Aquarium"
+      ],
+      "assignedPens": [
+        {
+          "name": "Dolphins",
+          "penType": "Aquarium",
+          "landSpace": 0,
+          "waterSpace": 40,
+          "airSpace": 0,
+          "capacity": 9,
+          "animals": [
+            {
+              "name": "Aspen",
+              "species": "Dolphin",
+              "penType": [
+                "Aquarium"
+              ],
+              "animalsCompatibleWith": [
+                "Dolphin"
+              ],
+              "landSpace": 0,
+              "waterSpace": 40,
+              "airSpace": 0,
+              "inPen": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Alan",
+      "penTypes": [
+        "Dry",
+        "Petting"
+      ],
+      "assignedPens": [
+        {
+          "name": "Sloths",
+          "penType": "Dry",
+          "landSpace": 3,
+          "waterSpace": 0,
+          "airSpace": 0,
+          "capacity": 9,
+          "animals": [
+            {
+              "name": "Cujo",
+              "species": "Sloth",
+              "penType": [
+                "Dry"
+              ],
+              "animalsCompatibleWith": [
+                "Sloth"
+              ],
+              "landSpace": 3,
+              "waterSpace": 0,
+              "airSpace": 0,
+              "inPen": false
+            }
+          ]
+        },
+        {
+          "name": "Dogs",
+          "penType": "Petting",
+          "landSpace": 3,
+          "waterSpace": 0,
+          "airSpace": 0,
+          "capacity": 9,
+          "animals": [
+            {
+              "name": "Harper",
+              "species": "Goat",
+              "penType": [
+                "Dry",
+                "Petting"
+              ],
+              "animalsCompatibleWith": [
+                "Goat"
+              ],
+              "landSpace": 3,
+              "waterSpace": 0,
+              "airSpace": 0,
+              "inPen": false
+            }
+          ]
+        },
+        {
+          "name": "Cats",
+          "penType": "Dry",
+          "landSpace": 4,
+          "waterSpace": 0,
+          "airSpace": 0,
+          "capacity": 9,
+          "animals": [
+            {
+              "name": "Blue",
+              "species": "Cat",
+              "penType": [
+                "Dry"
+              ],
+              "animalsCompatibleWith": [
+                "Cat"
+              ],
+              "landSpace": 4,
+              "waterSpace": 0,
+              "airSpace": 0,
+              "inPen": false
+            }
+          ]
+        },
+        {
+          "name": "Goats",
+          "penType": "Petting",
+          "landSpace": 3,
+          "waterSpace": 0,
+          "airSpace": 0,
+          "capacity": 9,
+          "animals": [
+            {
+              "name": "Harper",
+              "species": "Goat",
+              "penType": [
+                "Dry",
+                "Petting"
+              ],
+              "animalsCompatibleWith": [
+                "Goat"
+              ],
+              "landSpace": 3,
+              "waterSpace": 0,
+              "airSpace": 0,
+              "inPen": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+]

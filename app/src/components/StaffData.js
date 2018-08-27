@@ -9,6 +9,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
+import TableHead from "@material-ui/core/TableHead";
 import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
@@ -136,6 +137,14 @@ class CustomPaginationActionsTable extends React.Component {
     // this.setState({ rowsPerPage: event.target.value });
   };
 
+  getName(x) {
+    const list = [];
+    if (x.assignedPens) {
+      x.assignedPens.map(s => list.push(s.name));
+    }
+    return list;
+  }
+
   render() {
     const { classes } = this.props;
     const { rows, rowsPerPage, page } = this.state;
@@ -146,6 +155,13 @@ class CustomPaginationActionsTable extends React.Component {
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
+            <TableHead>
+              <TableRow style={{ height: "1vh" }}>
+                <TableCell>Name</TableCell>
+                <TableCell>Assigned Pens</TableCell>
+                <TableCell>PenTypes</TableCell>
+              </TableRow>
+            </TableHead>
             <TableBody>
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -160,8 +176,8 @@ class CustomPaginationActionsTable extends React.Component {
                       <TableCell component="th" scope="row">
                         {row.name}
                       </TableCell>
-                      <TableCell numeric>{row.species}</TableCell>
-                      <TableCell numeric>{row.id}</TableCell>
+                      <TableCell>{this.getName(row)}</TableCell>
+                      <TableCell>{row.penTypes}</TableCell>
                     </TableRow>
                   );
                 })}
