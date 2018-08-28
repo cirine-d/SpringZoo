@@ -170,8 +170,12 @@ class CustomPaginationActionsTable extends React.Component {
                         {row.name}
                       </TableCell>
                       <TableCell>{row.species}</TableCell>
-                      <TableCell>{row.animalsCompatibleWith}</TableCell>
-                      <TableCell>{row.penType}</TableCell>
+                      <TableCell>
+                        {row.animalsCompatibleWith.map(x => `  -  ${x}   `)}
+                      </TableCell>
+                      <TableCell>
+                        {row.penType.map(x => `  -  ${x}   `)}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

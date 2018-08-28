@@ -35,7 +35,7 @@ body {
   margin: 5% auto;
   left: 0;
   right: 0;
-  top: 6.5vh;
+  top: 4vh;
 }
 
 .App-intro {
@@ -48,8 +48,8 @@ body {
   max-height: 85vh;
   width: 100vw;
   flex-wrap: wrap;
-  padding-left: 5vw;
-  padding-right: 5vw;
+  /* padding-left: 5vw;
+  padding-right: 5vw; */
 }
 
 @keyframes App-logo-spin {

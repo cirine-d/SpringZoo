@@ -138,7 +138,6 @@ class WeatherCard extends Component {
                     id: "age-native-simple"
                   }}
                 >
-                  <option value="" />
                   {cities.map(city => (
                     <option value={city.code}>{city.name}</option>
                   ))}

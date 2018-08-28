@@ -185,7 +185,9 @@ class CustomPaginationActionsTable extends React.Component {
                       <TableCell component="th" scope="row">
                         {row.name}
                       </TableCell>
-                      <TableCell>{this.getSpeciesContained(row)}</TableCell>
+                      <TableCell>
+                        {this.getSpeciesContained(row).map(x => `  -  ${x}   `)}
+                      </TableCell>
                       <TableCell>{row.penType}</TableCell>
                       <TableCell>{this.getCapacity(row)}</TableCell>
                     </TableRow>

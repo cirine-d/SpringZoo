@@ -176,8 +176,12 @@ class CustomPaginationActionsTable extends React.Component {
                       <TableCell component="th" scope="row">
                         {row.name}
                       </TableCell>
-                      <TableCell>{this.getName(row)}</TableCell>
-                      <TableCell>{row.penTypes}</TableCell>
+                      <TableCell>
+                        {this.getName(row).map(x => `  -  ${x}   `)}
+                      </TableCell>
+                      <TableCell>
+                        {row.penTypes.map(x => `-   ${x}   `)}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
