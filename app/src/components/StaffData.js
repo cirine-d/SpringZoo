@@ -102,12 +102,6 @@ const TablePaginationActionsWrapped = withStyles(actionsStyles, {
   withTheme: true
 })(TablePaginationActions);
 
-let counter = 0;
-// function createData(name, calories, fat) {
-//   counter += 1;
-//   return { id: counter, name, calories, fat };
-// }
-
 const styles = theme => ({
   root: {
     width: "100%",
@@ -168,7 +162,7 @@ class CustomPaginationActionsTable extends React.Component {
                 .map(row => {
                   return (
                     <TableRow
-                      key={row.id}
+                      key={row.name}
                       hover
                       onClick={() => console.warn("clicked", row.species)}
                       style={{ height: "1vh" }}

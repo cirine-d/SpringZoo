@@ -3,7 +3,6 @@ import Paper from "@material-ui/core/Paper";
 import StaffData from "./StaffData.js";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import AddZooKeeperDialog from "./AddZooKeeperDialog.js";
 import "../css/Tile.css";
 
@@ -49,7 +48,7 @@ class StaffTile extends Component {
           species={this.state.speciesKnown}
           pens={this.props.pens}
           penTypes={this.props.penTypes}
-          animalNames={this.props.animalNames}
+          staffNames={this.props.staffNames}
           submit={this.props.submit}
         />
       </div>

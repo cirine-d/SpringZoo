@@ -22,7 +22,8 @@ class WeatherTile extends Component {
     humidity: 0,
     icon: "",
     city: "London",
-    refreshRequested: "false"
+    refreshRequested: "false",
+    isLoading: true
   };
 
   componentDidMount() {
@@ -47,7 +48,6 @@ class WeatherTile extends Component {
     const humidity = body.main.humidity;
     const wind = body.wind.speed;
     const icon = body.weather[0].icon;
-    console.warn(body);
     this.setState({
       description: descr,
       wind: wind,
@@ -56,7 +56,8 @@ class WeatherTile extends Component {
       icon: icon,
       isLoading: false,
       refreshRequested: false,
-      lastUpdateTime: moment().format("MMMM Do YYYY, h:mm:ss a")
+      lastUpdateTime: moment().format("MMMM Do YYYY, h:mm:ss a"),
+      isLoading: false
     });
   }
 

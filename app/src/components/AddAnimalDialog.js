@@ -26,19 +26,23 @@ export default class AddAnimalDialog extends React.Component {
 
   handleSubmit = () => {
     if (this.isFormComplete()) {
-      this.setState({ error: null });
-      let item = {
-        name: this.state.name,
-        species: this.state.species,
-        penType: [this.state.penType],
-        animalsCompatibleWith: this.state.animalsCompatibleWith,
-        landSpace: this.state.landSpace,
-        waterSpace: this.state.waterSpace,
-        airSpace: this.state.airSpace,
-        assignedPen: this.state.assignedPen
-      };
-      this.props.submit(item, "animals");
-      this.props.close();
+      if (this.isNameUnique()) {
+        this.setState({ error: null });
+        let item = {
+          name: this.state.name,
+          species: this.state.species,
+          penType: [this.state.penType],
+          animalsCompatibleWith: this.state.animalsCompatibleWith,
+          landSpace: this.state.landSpace,
+          waterSpace: this.state.waterSpace,
+          airSpace: this.state.airSpace,
+          assignedPen: this.state.assignedPen
+        };
+        this.props.submit(item, "animals");
+        this.props.close();
+      } else {
+        this.setState({ error: "Name is already taken" });
+      }
     } else {
       this.setState({ error: "Complete all required fields" });
     }
@@ -82,11 +86,10 @@ export default class AddAnimalDialog extends React.Component {
 
   getAssignedSpecies = pen => {
     let list = [];
-    pen.animals
-      ? pen.animals.map(
-          animal => !list.includes(animal.species) && list.push(animal.species)
-        )
-      : null;
+    pen.animals &&
+      pen.animals.map(
+        animal => !list.includes(animal.species) && list.push(animal.species)
+      );
     return list;
   };
 
@@ -105,6 +108,14 @@ export default class AddAnimalDialog extends React.Component {
       isComplete = true;
     }
     return isComplete;
+  };
+
+  isNameUnique = () => {
+    var isUnique = true;
+    if (this.props.animalNames.includes(this.state.name)) {
+      isUnique = false;
+    }
+    return isUnique;
   };
 
   validatePen = pen => {
@@ -175,7 +186,9 @@ export default class AddAnimalDialog extends React.Component {
             >
               <option value="" />
               {this.props.penTypes.map(type => (
-                <option value={type}>{type}</option>
+                <option key={type} value={type}>
+                  {type}
+                </option>
               ))}
             </Select>
           </FormControl>

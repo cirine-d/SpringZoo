@@ -5,9 +5,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { Divider } from "@material-ui/core";
@@ -21,18 +19,22 @@ export default class AddAnimalPenDialog extends React.Component {
 
   handleSubmit = () => {
     if (this.isFormComplete()) {
-      this.setState({ error: null });
-      let item = {
-        name: this.state.name,
-        penType: this.state.penType,
-        landSpace: this.state.landSpace,
-        waterSpace: this.state.waterSpace,
-        airSpace: this.state.airSpace,
-        assignedZooKeeper: this.state.assignedZooKeeper,
-        capacity: 10
-      };
-      this.props.submit(item, "animalPens");
-      this.props.close();
+      if (this.isNameUnique()) {
+        this.setState({ error: null });
+        let item = {
+          name: this.state.name,
+          penType: this.state.penType,
+          landSpace: this.state.landSpace,
+          waterSpace: this.state.waterSpace,
+          airSpace: this.state.airSpace,
+          assignedZooKeeper: this.state.assignedZooKeeper,
+          capacity: 10
+        };
+        this.props.submit(item, "animalPens");
+        this.props.close();
+      } else {
+        this.setState({ error: "Name is already taken" });
+      }
     } else {
       this.setState({ error: "Complete all required fields" });
     }
@@ -80,16 +82,23 @@ export default class AddAnimalPenDialog extends React.Component {
     if (
       (this.state.name !== "") &
       (this.state.penType !== undefined) &
-      (this.state.landSpace !== undefined) &
-      (this.state.waterSpace !== undefined) &
-      (this.state.airSpace !== undefined) &
+      ((this.state.landSpace !== undefined) & !isNaN(this.state.landSpace)) &
+      ((this.state.waterSpace !== undefined) & !isNaN(this.state.waterSpace)) &
+      ((this.state.airSpace !== undefined) & !isNaN(this.state.airSpace)) &
       (this.state.assignedZooKeeper !== "" || undefined)
     ) {
       isComplete = true;
     }
-    console.warn({ state: this.state, status: isComplete });
 
     return isComplete;
+  };
+
+  isNameUnique = () => {
+    var isUnique = true;
+    if (this.props.penNames.includes(this.state.name)) {
+      isUnique = false;
+    }
+    return isUnique;
   };
 
   render() {
@@ -123,7 +132,9 @@ export default class AddAnimalPenDialog extends React.Component {
             >
               <option value="" />
               {this.props.penTypes.map(type => (
-                <option value={type}>{type}</option>
+                <option key={type} value={type}>
+                  {type}
+                </option>
               ))}
             </Select>
           </FormControl>

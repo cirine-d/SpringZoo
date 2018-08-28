@@ -55,6 +55,7 @@ class PensTile extends Component {
           close={this.handleClose}
           open={this.state.dialogOpen}
           penTypes={this.props.penTypes}
+          penNames={this.props.penNames}
           submit={this.props.submit}
           keepers={this.props.keepers}
         />

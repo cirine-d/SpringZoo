@@ -21,13 +21,17 @@ export default class AddZooKeeperDialog extends React.Component {
 
   handleSubmit = () => {
     if (this.isFormComplete()) {
-      this.setState({ error: null });
-      let item = {
-        name: this.state.name,
-        penTypes: this.state.penTypes
-      };
-      this.props.submit(item, "staff");
-      this.props.close();
+      if (this.isNameUnique()) {
+        this.setState({ error: null });
+        let item = {
+          name: this.state.name,
+          penTypes: this.state.penTypes
+        };
+        this.props.submit(item, "staff");
+        this.props.close();
+      } else {
+        this.setState({ error: "Name is already taken" });
+      }
     } else {
       this.setState({ error: "Complete all required fields" });
     }
@@ -46,8 +50,15 @@ export default class AddZooKeeperDialog extends React.Component {
     if ((this.state.name !== "") & (this.state.penTypes.length !== 0)) {
       isComplete = true;
     }
-
     return isComplete;
+  };
+
+  isNameUnique = () => {
+    var isUnique = true;
+    if (this.props.staffNames.includes(this.state.name)) {
+      isUnique = false;
+    }
+    return isUnique;
   };
 
   render() {

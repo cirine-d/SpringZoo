@@ -145,13 +145,25 @@ class App extends Component {
             submit={this.handlePenSubmit}
             penTypes={penTypes}
             keepers={staffData}
+            penNames={penNames}
           />
           <StaffTile
             data={staffData}
             penTypes={penTypes}
+            staffNames={staffNames}
             submit={this.handleStaffSubmit}
           />
-          <WeatherTile />
+          <div
+            style={{
+              height: "40vh",
+              width: "50vw",
+              marginLeft: "auto",
+              marginRight: "auto",
+              maxWidth: "80vh"
+            }}
+          >
+            <WeatherTile />
+          </div>
         </div>
       </div>
     );

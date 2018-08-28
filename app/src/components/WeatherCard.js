@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Divider, FormControl, InputLabel, Select } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
@@ -125,7 +123,7 @@ class WeatherCard extends Component {
               <div style={{ height: "auto", width: "auto", float: "left" }}>
                 Weather - {this.props.description}
                 <img
-                  bodyStyle={{ objectFit: "cover !important" }}
+                  alt=""
                   src={`http://openweathermap.org/img/w/${this.props.icon}.png`}
                 />
               </div>
@@ -142,24 +140,28 @@ class WeatherCard extends Component {
                   }}
                 >
                   {cities.map(city => (
-                    <option value={city.code}>{city.name}</option>
+                    <option key={city.code} value={city.code}>
+                      {city.name}
+                    </option>
                   ))}
                 </Select>
               </FormControl>
             </div>
           </Typography>
           <div style={{ textAlign: "left" }}>
+            <Typography component="p">wind: {this.props.wind} m/s</Typography>
+            <Divider />
             <Typography component="p">
-              wind: {this.props.wind} m/s
-              <Divider />
               temperature: {Math.round(this.props.temperature - 273.15)} Celcius
-              <Divider />
+            </Typography>
+            <Divider />
+            <Typography component="p">
               humidity: {this.props.humidity} %
             </Typography>
           </div>
           <div style={{ height: "1vh", fontSize: "1.3vh", float: "right" }}>
             <span>Updated last at: {this.props.time}</span>
-            <IconButton mini onClick={() => this.props.update()}>
+            <IconButton mini="true" onClick={() => this.props.update()}>
               <HistoryIcon />
             </IconButton>
           </div>
