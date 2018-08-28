@@ -112,7 +112,6 @@ class WeatherCard extends Component {
             <div
               style={{
                 display: "flex",
-                paddingLeft: "4vh",
                 width: "100%",
                 justifyContent: "space-between",
                 backgroundSize: "cover"
