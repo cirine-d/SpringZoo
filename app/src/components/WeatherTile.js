@@ -3,6 +3,7 @@ import Paper from "@material-ui/core/Paper";
 import "../css/Tile.css";
 import WeatherCard from "./WeatherCard";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import moment from "moment";
 
 const styles = theme => ({
   root: {
@@ -19,12 +20,26 @@ class WeatherTile extends Component {
     wind: 0,
     temperature: 0,
     humidity: 0,
-    icon: ""
+    icon: "",
+    city: "London",
+    refreshRequested: "false"
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.fetchWeather();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.city !== prevState.city || this.state.refreshRequested) {
+      this.fetchWeather();
+    }
+  }
+
+  async fetchWeather() {
     const response = await fetch(
-      "https://api.openweathermap.org/data/2.5/weather?id=2172797&APPID=483d1e767a9ef8510f28061c00e343ad"
+      `https://api.openweathermap.org/data/2.5/weather?q=${
+        this.state.city
+      }&APPID=fde0635034a7803e52160f061920ff27`
     );
     const body = await response.json();
     const descr = body.weather[0].description;
@@ -32,15 +47,26 @@ class WeatherTile extends Component {
     const humidity = body.main.humidity;
     const wind = body.wind.speed;
     const icon = body.weather[0].icon;
+    console.warn(body);
     this.setState({
       description: descr,
       wind: wind,
       temperature: temp,
       humidity: humidity,
       icon: icon,
-      isLoading: false
+      isLoading: false,
+      refreshRequested: false,
+      lastUpdateTime: moment().format("MMMM Do YYYY, h:mm:ss a")
     });
   }
+
+  handleCityChange = name => {
+    this.setState({ city: String(name) });
+  };
+
+  handleUpdate = () => {
+    this.setState({ refreshRequested: true });
+  };
 
   render() {
     const { isLoading } = this.state;
@@ -57,6 +83,9 @@ class WeatherTile extends Component {
             wind={this.state.wind}
             icon={this.state.icon}
             temperature={this.state.temperature}
+            selectCity={this.handleCityChange}
+            update={this.handleUpdate}
+            time={this.state.lastUpdateTime}
           />
         </Paper>
       </div>

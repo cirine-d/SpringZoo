@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -7,7 +7,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { Divider } from "@material-ui/core";
+import { Divider, FormControl, InputLabel, Select } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
+import HistoryIcon from "@material-ui/icons/History";
+import "../css/WeatherTileImage.css";
 
 const styles = {
   card: {},
@@ -35,9 +38,21 @@ const images = {
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ23ueNdlZ3TYam-Y34Bf7Cy6jOAl9fixE-ZJCqkwb1DXeY4Vtp"
 };
 
-function WeatherCard(props) {
-  function getWeatherPic() {
-    switch (props.icon) {
+const cities = [
+  { name: "London", code: "London,uk" },
+  { name: "Strasbourg", code: "Strasbourg,fr" },
+  { name: "Sydney", code: "Sydney,au" },
+  { name: "Republic of Seychelles", code: "Republic of Seychelles,sc" },
+  { name: "Toronto", code: "Toronto,ca" }
+];
+
+class WeatherCard extends Component {
+  state = {
+    city: ""
+  };
+
+  getWeatherPic() {
+    switch (this.props.icon) {
       case "01d":
         return images.clearSky;
       case "01n":
@@ -78,33 +93,78 @@ function WeatherCard(props) {
         return images.fewClouds;
     }
   }
-  const { classes } = props;
-  return (
-    <Card className={classes.card}>
-      <CardMedia
-        component="img"
-        height="140"
-        className={classes.media}
-        image={getWeatherPic()}
-        title="Weather"
-      />
-      <CardContent style={{ minHeight: "20vh" }}>
-        <Typography gutterBottom variant="headline" component="h2">
-          Weather - {props.description}
-          <div styles={{ height: "auto", width: "auto" }}>
-            <img src={`http://openweathermap.org/img/w/${props.icon}.png`} />
+
+  handleCityChange = name => event => {
+    this.setState({ [name]: event.target.value });
+    this.props.selectCity(String(event.target.value));
+  };
+  render() {
+    return (
+      <Card>
+        <CardMedia
+          component="img"
+          height="140"
+          image={this.getWeatherPic()}
+          title="Weather"
+        />
+        <CardContent style={{ minHeight: "20vh" }}>
+          <Typography gutterBottom variant="headline" component="h2">
+            <div
+              style={{
+                display: "flex",
+                paddingLeft: "4vh",
+                width: "100%",
+                justifyContent: "space-between",
+                backgroundSize: "cover"
+              }}
+            >
+              {" "}
+              <div style={{ height: "auto", width: "auto", float: "left" }}>
+                Weather - {this.props.description}
+                <img
+                  bodyStyle={{ objectFit: "cover !important" }}
+                  src={`http://openweathermap.org/img/w/${this.props.icon}.png`}
+                />
+              </div>
+              <FormControl>
+                <InputLabel htmlFor="City Code">City</InputLabel>
+                <Select
+                  native
+                  fullWidth
+                  value={this.props.city}
+                  onChange={this.handleCityChange("cityCode")}
+                  inputProps={{
+                    name: "cityCode",
+                    id: "age-native-simple"
+                  }}
+                >
+                  <option value="" />
+                  {cities.map(city => (
+                    <option value={city.code}>{city.name}</option>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+          </Typography>
+          <div style={{ textAlign: "left" }}>
+            <Typography component="p">
+              wind: {this.props.wind} m/s
+              <Divider />
+              temperature: {Math.round(this.props.temperature - 273.15)} Celcius
+              <Divider />
+              humidity: {this.props.humidity} %
+            </Typography>
           </div>
-        </Typography>
-        <Typography component="p">
-          wind: {props.wind}
-          <Divider />
-          temperature: {props.temperature}
-          <Divider />
-          humidity: {props.humidity}
-        </Typography>
-      </CardContent>
-    </Card>
-  );
+          <div style={{ height: "1vh", fontSize: "1.3vh", float: "right" }}>
+            <span>Updated last at: {this.props.time}</span>
+            <IconButton mini onClick={() => this.props.update()}>
+              <HistoryIcon />
+            </IconButton>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 }
 
 WeatherCard.propTypes = {

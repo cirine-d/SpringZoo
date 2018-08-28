@@ -1,5 +1,14 @@
 body {
-  background-color: rgb(173, 187, 180) !important;
+  /* background-color: rgb(173, 187, 180) !important; */
+  /* background-image: url("https://s3.pixers.pics/pixers/700/FO/13/96/80/18/4/700_FO139680184_0e7c24cede8eb83b995424831b39a389.jpg"); */
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1)
+    ),
+    url("https://s3.pixers.pics/pixers/700/FO/13/96/80/18/4/700_FO139680184_0e7c24cede8eb83b995424831b39a389.jpg");
+  opacity: 0.9;
+  max-height: 100%;
+  overflow-y: hidden;
 }
 
 .App {
@@ -8,18 +17,25 @@ body {
 
 .App-logo {
   animation: App-logo-spin infinite 5s linear;
-  height: 80px;
+  height: 140px;
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  background: rgba(34, 34, 34, 0.87);
+  height: 160px;
   padding: 20px;
+  padding-top: 8px;
   color: white;
+  margin-bottom: 2vh;
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 5vh;
+  position: fixed;
+  margin: 5% auto;
+  left: 0;
+  right: 0;
+  top: 6.5vh;
 }
 
 .App-intro {
@@ -32,6 +48,8 @@ body {
   max-height: 85vh;
   width: 100vw;
   flex-wrap: wrap;
+  padding-left: 5vw;
+  padding-right: 5vw;
 }
 
 @keyframes App-logo-spin {
