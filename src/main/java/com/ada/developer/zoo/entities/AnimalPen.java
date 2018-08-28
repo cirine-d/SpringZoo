@@ -112,7 +112,9 @@ public class AnimalPen {
 
     public void assignAnimal(Animal animal) {
         ArrayList<Animal> animals = new ArrayList<>();
-        this.animals.stream().forEach(x -> animals.add(x));
+        if (this.animals != null) {
+            this.animals.stream().forEach(x -> animals.add(x));
+        }
         animals.add(animal);
         this.animals = animals.stream().collect(Collectors.toSet());
         this.capacity = this.capacity - 1;

@@ -16,7 +16,9 @@ class App extends Component {
       penData: [],
       staffData: []
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAnimalSubmit = this.handleAnimalSubmit.bind(this);
+    this.handlePenSubmit = this.handlePenSubmit.bind(this);
+    this.handleAnimalStaffSubmit = this.handleStaffSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -35,7 +37,8 @@ class App extends Component {
     });
   }
 
-  async handleSubmit(item, target) {
+  async handleAnimalSubmit(item, target) {
+    console.warn({ item });
     await fetch(`/api/${target}`, {
       method: "POST",
       headers: {
@@ -43,6 +46,51 @@ class App extends Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(item)
+    });
+
+    await fetch(`/api/animalPens/${item.assignedPen}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: item.name
+    });
+
+    window.location.reload();
+  }
+
+  async handleStaffSubmit(item, target) {
+    await fetch(`/api/${target}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(item)
+    });
+
+    window.location.reload();
+  }
+
+  async handlePenSubmit(item, target) {
+    console.warn("yeaa");
+    await fetch(`/api/${target}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(item)
+    });
+
+    await fetch(`/api/staff/${item.assignedZooKeeper}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: item.name
     });
 
     window.location.reload();
@@ -90,18 +138,18 @@ class App extends Component {
             pens={availablePens}
             penTypes={penTypes}
             animalNames={animalNames}
-            submit={this.handleSubmit}
+            submit={this.handleAnimalSubmit}
           />
           <PensTile
             data={penData}
-            submit={this.handleSubmit}
+            submit={this.handlePenSubmit}
             penTypes={penTypes}
             keepers={staffData}
           />
           <StaffTile
             data={staffData}
             penTypes={penTypes}
-            submit={this.handleSubmit}
+            submit={this.handleStaffSubmit}
           />
           <WeatherTile />
         </div>

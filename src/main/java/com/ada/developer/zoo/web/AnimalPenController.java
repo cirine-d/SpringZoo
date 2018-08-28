@@ -1,6 +1,7 @@
 package com.ada.developer.zoo.web;
 
 import com.ada.developer.zoo.FileHandler;
+import com.ada.developer.zoo.entities.Animal;
 import com.ada.developer.zoo.entities.AnimalPen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ class AnimalPenController {
     private final Logger log = LoggerFactory.getLogger(AnimalPenController.class);
 
     File file = new File("C:\\Code\\GitKraken\\SpringZoo\\pens.json");
+    File animalFile = new File("C:\\Code\\GitKraken\\SpringZoo\\animals.json");
 
     @GetMapping("/animalPens")
     ArrayList<AnimalPen> pens() {
@@ -51,16 +53,17 @@ class AnimalPenController {
     }
 
     @PutMapping("/animalPens/{name}")
-    ResponseEntity<AnimalPen> updateAnimalPen(@PathVariable String name, @Valid @RequestBody AnimalPen animalPen)
+    ResponseEntity<AnimalPen> assignAnimalToAnimalPen(@PathVariable String name, @Valid @RequestBody String animal)
             throws URISyntaxException {
-        log.info("Request to update animalPen: {}", animalPen);
-        ArrayList<AnimalPen> animalList = new ArrayList<AnimalPen>();
-        FileHandler.readFromAnimalPenFile(file.getPath()).stream().forEach(item -> animalList.add(item));
-        ArrayList<AnimalPen> updatedList = animalList.stream().filter(pen -> !pen.getName().equals(name))
-                .collect(Collectors.toCollection(ArrayList::new));
-        updatedList.add(animalPen);
-        FileHandler.writeAnimalPenToFile(updatedList, file.getPath());
-        AnimalPen result = FileHandler.findAnimalPen(animalPen.getName(), file.getPath());
+        log.info("Request to assign animal to animalPen: {}", name);
+        ArrayList<AnimalPen> penListToReturn = new ArrayList<AnimalPen>();
+        AnimalPen penToUpdate = FileHandler.retrieveAnimalPen(name, file.getPath());
+        Animal animalToassign = FileHandler.findAnimal(animal, animalFile.getPath());
+        penToUpdate.assignAnimal(animalToassign);
+        penListToReturn.add(penToUpdate);
+        FileHandler.readFromAnimalPenFile(file.getPath()).stream().forEach(item -> penListToReturn.add(item));
+        FileHandler.writeAnimalPenToFile(penListToReturn, file.getPath());
+        AnimalPen result = FileHandler.findAnimalPen(name, file.getPath());
         return ResponseEntity.created(new URI("/api/animalPens/" + result.getName())).body(result);
     }
 

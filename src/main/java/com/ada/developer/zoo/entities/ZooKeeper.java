@@ -68,7 +68,9 @@ public class ZooKeeper {
 
     public void assignPen(AnimalPen pen) {
         ArrayList<AnimalPen> pens = new ArrayList<>();
-        this.assignedPens.stream().forEach(x -> pens.add(x));
+        if (this.assignedPens != null) {
+            this.assignedPens.stream().forEach(x -> pens.add(x));
+        }
         pens.add(pen);
         this.assignedPens = pens.stream().collect(Collectors.toSet());
     }

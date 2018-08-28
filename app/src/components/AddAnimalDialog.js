@@ -77,7 +77,7 @@ export default class AddAnimalDialog extends React.Component {
   };
 
   handleAssignedPenChange = name => event => {
-    this.setState({ [name]: event.target.value });
+    this.setState({ assignedPen: event.target.value });
   };
 
   getAssignedSpecies = pen => {
@@ -92,6 +92,7 @@ export default class AddAnimalDialog extends React.Component {
 
   isFormComplete = () => {
     var isComplete = false;
+    console.warn(this.state.assignedPen);
     if (
       (this.state.name !== "") &
       (this.state.species !== "") &
@@ -99,7 +100,7 @@ export default class AddAnimalDialog extends React.Component {
       (this.state.landSpace !== "") &
       (this.state.waterSpace !== "") &
       (this.state.airSpace !== "") &
-      (this.state.assignedPen !== "")
+      (this.state.assignedPen !== undefined || "")
     ) {
       isComplete = true;
     }
@@ -245,10 +246,11 @@ export default class AddAnimalDialog extends React.Component {
                   value={this.state.assignedPen}
                   onChange={this.handleAssignedPenChange("assignedPen")}
                   inputProps={{
-                    name: "penType",
+                    name: "assignedPen",
                     id: "age-native-simple"
                   }}
                 >
+                  <option value={""} />
                   {this.getSuitablePen().map(pen => (
                     <option value={pen.name}>{pen.name}</option>
                   ))}

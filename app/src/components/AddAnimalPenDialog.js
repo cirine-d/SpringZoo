@@ -15,7 +15,8 @@ import { Divider } from "@material-ui/core";
 export default class AddAnimalPenDialog extends React.Component {
   state = {
     name: "",
-    error: null
+    error: null,
+    assignedZooKeeper: ""
   };
 
   handleSubmit = () => {
@@ -27,7 +28,7 @@ export default class AddAnimalPenDialog extends React.Component {
         landSpace: this.state.landSpace,
         waterSpace: this.state.waterSpace,
         airSpace: this.state.airSpace,
-        assignedZooKeeper: "",
+        assignedZooKeeper: this.state.assignedZooKeeper,
         capacity: 10
       };
       this.props.submit(item, "animalPens");
@@ -58,7 +59,7 @@ export default class AddAnimalPenDialog extends React.Component {
   };
 
   handleAssignedZooKeeperChange = name => event => {
-    this.setState({ [name]: event.target.value });
+    this.setState({ assignedZooKeeper: event.target.value });
   };
 
   getSuitableZooKeeper = () => {
@@ -78,14 +79,16 @@ export default class AddAnimalPenDialog extends React.Component {
     var isComplete = false;
     if (
       (this.state.name !== "") &
-      (this.state.penType !== "") &
-      (this.state.landSpace !== "") &
-      (this.state.waterSpace !== "") &
-      (this.state.airSpace !== "") &
-      (this.state.assignedZooKeeper !== "")
+      (this.state.penType !== undefined) &
+      (this.state.landSpace !== undefined) &
+      (this.state.waterSpace !== undefined) &
+      (this.state.airSpace !== undefined) &
+      (this.state.assignedZooKeeper !== "" || undefined)
     ) {
       isComplete = true;
     }
+    console.warn({ state: this.state, status: isComplete });
+
     return isComplete;
   };
 

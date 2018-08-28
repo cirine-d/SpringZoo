@@ -2,6 +2,7 @@ package com.ada.developer.zoo.web;
 
 import com.ada.developer.zoo.FileHandler;
 import com.ada.developer.zoo.entities.Animal;
+import com.ada.developer.zoo.entities.AnimalPen;
 import com.ada.developer.zoo.entities.ZooKeeper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ class ZooKeeperController {
     private final Logger log = LoggerFactory.getLogger(AnimalController.class);
 
     File file = new File("C:\\Code\\GitKraken\\SpringZoo\\staff.json");
+    File animalPenFile = new File("C:\\Code\\GitKraken\\SpringZoo\\pens.json");
 
     @GetMapping("/staff")
     ArrayList<ZooKeeper> staff() {
@@ -52,17 +54,18 @@ class ZooKeeperController {
     }
 
     @PutMapping("/staff/{name}")
-    ResponseEntity<ZooKeeper> updateZooKeeper(@PathVariable String name, @Valid @RequestBody ZooKeeper zooKeeper)
-            throws URISyntaxException {
-        log.info("Request to update zooKeeper: {}", zooKeeper);
-        ArrayList<ZooKeeper> keeperList = new ArrayList<ZooKeeper>();
-        FileHandler.readFromZooKeeperFile(file.getPath()).stream().forEach(item -> keeperList.add(item));
-        ArrayList<ZooKeeper> updatedList = keeperList.stream().filter(keeper -> !keeper.getName().equals(name))
-                .collect(Collectors.toCollection(ArrayList::new));
-        updatedList.add(zooKeeper);
-        FileHandler.writeZooKeeperToFile(updatedList, file.getPath());
-        ZooKeeper result = FileHandler.findZooKeeper(zooKeeper.getName(), file.getPath());
-        return ResponseEntity.created(new URI("/api/zooKeeper/" + result.getName())).body(result);
+    ResponseEntity<ZooKeeper> assignAnimalPenToZooKeeper(@PathVariable String name,
+            @Valid @RequestBody String animalPen) throws URISyntaxException {
+        log.info("Request to assign animalPen to zooKeeper: {}", name);
+        ArrayList<ZooKeeper> staffListToReturn = new ArrayList<ZooKeeper>();
+        ZooKeeper zooKeeperToUpdate = FileHandler.retrieveZooKeeper(name, file.getPath());
+        AnimalPen penToassign = FileHandler.findAnimalPen(animalPen, animalPenFile.getPath());
+        zooKeeperToUpdate.assignPen(penToassign);
+        staffListToReturn.add(zooKeeperToUpdate);
+        FileHandler.readFromZooKeeperFile(file.getPath()).stream().forEach(item -> staffListToReturn.add(item));
+        FileHandler.writeZooKeeperToFile(staffListToReturn, file.getPath());
+        ZooKeeper result = FileHandler.findZooKeeper(name, file.getPath());
+        return ResponseEntity.created(new URI("/api/staff/" + result.getName())).body(result);
     }
 
     @DeleteMapping("/staff/{name}")

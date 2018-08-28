@@ -131,7 +131,7 @@ public interface FileHandler {
 
     public static Animal retrieveAnimal(String name, final String filePath) {
         ArrayList<Animal> fileOutput = readFromAnimalFile(filePath);
-        ArrayList<Animal> newAnimalList = readFromAnimalFile(filePath);
+        ArrayList<Animal> newAnimalList = new ArrayList<Animal>();
         Animal[] target = new Animal[1];
         fileOutput.stream().forEach(animal -> {
             if (animal.getName().equals(name)) {
@@ -146,7 +146,7 @@ public interface FileHandler {
 
     public static AnimalPen retrieveAnimalPen(String name, final String filePath) {
         ArrayList<AnimalPen> fileOutput = readFromAnimalPenFile(filePath);
-        ArrayList<AnimalPen> newAnimalPenList = readFromAnimalPenFile(filePath);
+        ArrayList<AnimalPen> newAnimalPenList = new ArrayList<AnimalPen>();
         AnimalPen[] target = new AnimalPen[1];
         fileOutput.stream().forEach(pen -> {
             if (pen.getName().equals(name)) {
@@ -160,7 +160,7 @@ public interface FileHandler {
 
     public static ZooKeeper retrieveZooKeeper(String name, final String filePath) {
         ArrayList<ZooKeeper> fileOutput = readFromZooKeeperFile(filePath);
-        ArrayList<ZooKeeper> newZooKeeperList = readFromZooKeeperFile(filePath);
+        ArrayList<ZooKeeper> newZooKeeperList = new ArrayList<ZooKeeper>();
 
         ZooKeeper[] target = new ZooKeeper[1];
         fileOutput.stream().forEach(keeper -> {

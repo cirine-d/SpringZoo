@@ -42,8 +42,12 @@ const cities = [
   { name: "London", code: "London,uk" },
   { name: "Strasbourg", code: "Strasbourg,fr" },
   { name: "Sydney", code: "Sydney,au" },
-  { name: "Republic of Seychelles", code: "Republic of Seychelles,sc" },
-  { name: "Toronto", code: "Toronto,ca" }
+  { name: "Seychelles", code: "Republic of Seychelles,sc" },
+  { name: "Toronto", code: "Toronto,ca" },
+  { name: "Tokyo", code: "Tokyo,jp" },
+  { name: "San Francisco", code: "San Francisco,us" },
+  { name: "Reykjavik", code: "Reykjavik,is" },
+  { name: "Dubai", code: "Dubai,ae" }
 ];
 
 class WeatherCard extends Component {
