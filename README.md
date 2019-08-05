@@ -1,4 +1,4 @@
-SpringZoo
+Spring Zoo
 
 Spring Boot API and React Front end
 
